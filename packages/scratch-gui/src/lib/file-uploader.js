@@ -8,11 +8,17 @@ import gifDecoder from './gif-decoder';
  * @param {string} nameExt File name + extension (e.g. 'my_image.png')
  * @returns {string} The name without the extension, or the full name if
  * there was no '.' in the string (e.g. 'my_image')
+ * In case of multiple periods in the filename, only the extension (the last period & following characters) is removed.
  */
 const extractFileName = function (nameExt) {
-    // There could be multiple dots, but get the stuff before the first .
-    const nameParts = nameExt.split('.', 1); // we only care about the first .
-    return nameParts[0];
+    // There could be multiple dots, but get the stuff before the last.
+    const lastIndex = nameExt.lastIndexOf('.'); // Get the index of the last period in the filename, if it exists.
+    if (lastIndex === -1) { 
+        return nameExt; // If no period was found, return the filename without modification.
+    }
+    else {
+        return nameExt.slice(0, lastIndex); // Otherwise, return the filename before the last period.
+    }
 };
 
 /**
